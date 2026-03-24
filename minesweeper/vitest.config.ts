@@ -2,9 +2,8 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    // テストファイルのパターン
-    include: ['src/**/*.test.ts', 'tests/**/*.test.ts'],
-    // グローバルなテストAPI（describe, it, expect）を有効化
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'tests/**/*.test.ts'],
+    environment: 'jsdom',
     globals: true,
   },
 });

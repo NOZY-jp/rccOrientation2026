@@ -36,3 +36,9 @@
 - `checkWinCondition` は公開APIを維持しつつ内部で `checkWinConditionPrototype` を呼ぶ構成にすると、D3の `checkWinByCheckpoints()` 置き換え時に移行しやすい
 - 暫定判定は `cell.type` のみを基準にし、`MINE_DANGER` 以外で `SAFE` になっていないセル数を集計すると「旗だけ立てた未開拓セル」を正しく未達成として扱える
 - `GAME_OVER` の不変条件を先頭で返すようにすると、既に敗北確定した状態を再評価で上書きしないことをテストで保証できる
+
+## 2026-03-24 T1-8 設定基盤（最小実装）
+- `GameConfigSchema` は `board.width/height` を `int().positive().min(3)`、`mineCount` を `int().nonnegative()`、`seed` を `int()` で定義し、`mineCount < width * height` を `refine` でクロスフィールド検証すると要件どおりの境界チェックを一箇所に集約できる
+- `DEFAULT_CONFIG` を `as const` で固定しつつ、`loadConfig` 側の overrides 型は `GameConfig` 由来（`Partial<GameConfig["board"]>`）にすると、テスト時の任意数値オーバーライドでリテラル型衝突を避けられる
+- 既存 `BoardConfig` がフラット構造（`width/height/mineCount/seed`）のため、設定入力は `board` ネストで受けても `loadConfig` の返却時にフラットへ正規化することで core 側非変更のまま導入できる
+- 必須欠如の検証は `loadConfig` ではデフォルト補完されるため、`GameConfigSchema.parse` を直接叩くテストを併用すると「欠如時エラー」要件を正しく担保できる
