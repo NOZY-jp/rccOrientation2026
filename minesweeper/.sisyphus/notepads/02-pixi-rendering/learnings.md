@@ -17,3 +17,8 @@
 - `@pixi/react` v8 requires explicit `extend({ Graphics, Text })` before using `<pixiGraphics>`/`<pixiText>` JSX nodes; without extend, canvas remains blank even though Stage mounts.
 - For strict palette literals (`as const`), mutable rendering variables (e.g. `fillColor`) should be widened to `number` in branching code to avoid TypeScript literal assignment errors.
 - In jsdom tests, `<pixiGraphics>` and `<pixiText>` behave as custom elements, so assertions are most reliable via rendered attributes (`text`) or direct tag queries, not widget runtime behavior.
+
+## 2026-03-24 T2-4 completion notes
+- Camera transforms are simplest when isolated: keep zoom/pan state in `useCamera` and apply only through a dedicated `<pixiContainer position scale>` wrapper so grid interaction code stays unchanged.
+- DOM-level pointer/wheel handling in `PixiCanvas` avoids intercepting left-click Pixi cell events while still enabling right/middle drag pan and wheel/touch-pinch zoom.
+- Touch pinch can be implemented with Pointer Events by tracking two active touch pointers and converting distance delta to the existing wheel-based zoom pathway for shared clamp logic.
