@@ -134,8 +134,8 @@ bun run test    # → PASS（D1のテスト + D2の新テスト）
 ```
 
 **ステップ6: 人間目視確認**
-- [ ] `bun run dev` でPixiJS Canvasが表示される（中身は空でもよい）
-- [ ] ブラウザコンソールにPixiJS関連のエラーが出ない
+- [x] `bun run dev` でPixiJS Canvasが表示される（中身は空でもよい）
+- [x] ブラウザコンソールにPixiJS関連のエラーが出ない
 
 **コミット**: `feat(d2): PixiJS + @pixi/react 統合基盤`
 
