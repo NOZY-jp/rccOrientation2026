@@ -39,9 +39,10 @@
 - フラグ表示
 - カメラ/ビューポート（ズーム・パン）
 - モバイル仮想ジョイスティック + 行動ボタン
-- PCキーボード入力（J=掘る / K=旗 / Space=点火）
+- PCキーボード入力（J=掘る / K=旗 / Space=点火 / 矢印キー=カーソル移動）
   > **⚠️ D2ではWASD（移動）は未実装。D7で連続移動として実装される。**
   > D2では「カーソル位置」をUI内部状態として持ち、J/Kキーの対象セルを指定するのみ。
+  > カーソル移動は矢印キー（↑↓←→）のみ対応。WASDは一切使用しない。
   > このカーソルは**D7の連続移動システムと完全に独立したUI専用一時機能**であり、
   > D7実装時に破棄される。公開インターフェースは`ActionIntent`（dig/flag/detonate）のみ。
 - 入力の正規化（PC/スマホ共通インターフェース）
@@ -241,7 +242,22 @@ bun run test    # → PASS
 - 左クリック（`button === 0`）→ `revealCell(state, x, y)`
 - 右クリック（`button === 2`）→ `toggleFlag(state, x, y)`
 - 座標変換: ピクセル位置 / CELL_SIZE = セル座標（`Math.floor`）
-- `useGameActions`: `useState<GameState>` で状態管理。各アクションはコア関数を呼び出し、**新しいGameStateを生成**して `setState` で更新（immutably）。コア関数は `GameState` を変更せず新しいオブジェクトを返す設計にする。
+- `useGameActions`: `useState<GameState>` で状態管理。**重要**: 現行D1コア関数は破壊的更新を行う（`revealCell` は `GameState` を直接変更して `RevealResult` を返し、`toggleFlag` は `state.flags` を変更して `boolean` を返す）。そのためUI側で状態複製を行うこと:
+  1. `structuredClone(state)` でディープコピーを生成
+  2. コピーに対してコア関数を呼び出す
+  3. コピーを `setState` でセット（React再描画をトリガー）
+  ```typescript
+  // useGameActions 内の実装パターン例
+  const handleReveal = (x: number, y: number) => {
+    const cloned = structuredClone(state);
+    const result = revealCell(cloned, x, y);
+    if (result.hitMine) {
+      cloned.phase = GamePhase.GAME_OVER;
+    }
+    setState(cloned);
+  };
+  ```
+  > 注: この `structuredClone` による防御的コピーはD2の簡略化アプローチであり、D8でcommand/reducerパイプラインに再構築されるまでの暫定措置。
 
 **ステップ5: テスト通過確認**
 ```bash
@@ -384,6 +400,8 @@ bun run test    # → PASS
   - Jキー押下 → dig アクションが発火すること
   - Kキー押下 → flag アクションが発火すること
   - Spaceキー押下 → detonate アクションが発火すること
+  - 矢印キー押下 → カーソル位置が移動すること
+  - WASDキー押下 → 何も起こらないこと（D2では未実装）
   - キーリピートが無効であること（押しっぱなしで連続発火しない）
 
 **ステップ3: 基盤構築**
@@ -411,7 +429,7 @@ bun run test    # → PASS
 - J → カーソル位置のセルを `revealCell()` で開拓
 - K → カーソル位置のセルを `toggleFlag()` で旗設置/解除
 
-**注意**: D2では「カーソル位置」の概念を最小限に導入する。グリッド上にハイライト表示されるカーソルセルを持ち、WASDで移動（D7の連続移動とは別）。これはPC操作の暫定対応であり、D7で本格的な移動システムに置き換えられる。
+**注意**: D2では「カーソル位置」の概念を最小限に導入する。グリッド上にハイライト表示されるカーソルセルを持ち、矢印キー（↑↓←→）で移動する。これはPC操作の暫定対応であり、D7で本格的な連続移動システムに置き換えられる。WASDはD2では一切使用しない（D7の連続移動で導入）。
 
 **ステップ5: テスト通過確認**
 ```bash
