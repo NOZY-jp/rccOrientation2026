@@ -6,6 +6,22 @@ function checkWinConditionPrototype(state: GameState): GamePhase {
 		return GamePhase.GAME_OVER;
 	}
 
+	const checkpoints = state.checkpoints;
+	if (checkpoints !== undefined && checkpoints.length > 0) {
+		const allCollected = checkpoints.every((checkpoint) => checkpoint.collected);
+
+		if (allCollected) {
+			const floorNumber = state.floorNumber ?? 1;
+			if (floorNumber >= 10) {
+				return GamePhase.VICTORY;
+			}
+
+			return GamePhase.FLOOR_CLEAR;
+		}
+
+		return GamePhase.PLAYING;
+	}
+
 	let unrevealedSafeCellCount = 0;
 
 	for (const row of state.cells) {

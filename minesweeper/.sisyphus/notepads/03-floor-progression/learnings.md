@@ -26,3 +26,7 @@
 - T3-4: `executeFloorClear(state)` は破壊的更新で MINE_DANGER/MINE_SAFE を SAFE + adjacentMines=0 に変換し、全プレイヤー `isAlive=true`、`flags.clear()` を実施
 - T3-4: `generateNextFloor(state, config)` は `seed + (state.floorNumber ?? 1)` で新盤面を生成して `floorNumber` を +1 した GameState を返す
 - T3-4: 新規テスト `game-phase-extended.test.ts` / `floor-state-machine.test.ts` を追加し、日本語テスト名で遷移・クリア処理・次フロア生成を検証、最終結果は vitest 104 passed / typecheck clean
+
+- T3-5: `checkWinCondition` は `state.phase===GAME_OVER` を最優先で返し、その後 `checkpoints?.length > 0` のときのみ CP 全回収判定を使うことで、CP未回収時は PLAYING、全回収時は floorNumber>=10 で VICTORY / それ以外 FLOOR_CLEAR を返す
+- T3-5: 後方互換は「CPが `undefined` または `[]` の場合に従来の全安全セル開拓判定へフォールバック」で維持でき、D1既存 `win-lose.test.ts`（5件）を無変更で通過
+- T3-5: 新規 `win-lose-updated.test.ts` で CPあり/未回収/10F勝利/空配列/undefined/GAME_OVER維持を日本語テスト名で検証し、全体結果は vitest 110 passed・typecheck clean
