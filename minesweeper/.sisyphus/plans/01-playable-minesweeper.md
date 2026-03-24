@@ -148,7 +148,7 @@ bun run test    # → PASS（型に関するテスト）
 ```
 
 **ステップ6: 人間目視確認**
-- [ ] 型定義がコンパイルエラーなしで通る（`bun run typecheck`）
+- [x] 型定義がコンパイルエラーなしで通る（`bun run typecheck`）
 
 **コミット**: `feat(d1): コア型定義（CellType, Player, GameState）`
 

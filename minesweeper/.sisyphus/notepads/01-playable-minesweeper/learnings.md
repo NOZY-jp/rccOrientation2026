@@ -15,3 +15,8 @@
 - `CellType` は D1 時点で enum の3値（`safe`, `mine_safe`, `mine_danger`）に限定し、`safe_cell` など旧stub値をテスト/型注釈から除去する必要がある
 - `tests/setup.test.ts` は `CellType` enum 参照（`CellType.SAFE`）へ更新しても `../src/core/types/index.ts` import 経路を維持すれば既存のセットアップ検証を継続できる
 - strict + `noUncheckedIndexedAccess` 下では `split(',')` の分割結果をデフォルト付き分割代入で受けると `string | undefined` エラーを回避できる
+
+## 2026-03-24 T1-3 盤面生成
+- `createSeededRandom` は xorshift32 で実装し、`seed=0` のときは固定の非0初期値へフォールバックすると乱数列停止を防げる
+- `generateBoard` は全セルを `MINE_SAFE` + `adjacentMines: 0` で初期化し、seed乱数で選んだユニーク座標のみ `MINE_DANGER` に切り替えると仕様に一致する
+- 決定性テストは「セルtype配列 + ソート済み mines Set」のシグネチャ比較にすると、Map/Set参照差異を避けつつ盤面同一性を確認できる
