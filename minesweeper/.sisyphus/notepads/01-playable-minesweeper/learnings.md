@@ -20,3 +20,14 @@
 - `createSeededRandom` は xorshift32 で実装し、`seed=0` のときは固定の非0初期値へフォールバックすると乱数列停止を防げる
 - `generateBoard` は全セルを `MINE_SAFE` + `adjacentMines: 0` で初期化し、seed乱数で選んだユニーク座標のみ `MINE_DANGER` に切り替えると仕様に一致する
 - 決定性テストは「セルtype配列 + ソート済み mines Set」のシグネチャ比較にすると、Map/Set参照差異を避けつつ盤面同一性を確認できる
+
+## 2026-03-24 T1-4 セル開拓 + flood-fill
+- `countAdjacentMines(state, x, y)` は 8近傍を二重ループで走査し、境界チェック後に `CellType.MINE_DANGER` のみ加算すると仕様どおりになる
+- `revealCell` は `MINE_DANGER` 直撃時に `phase = GAME_OVER` を即時反映し、`MINE_SAFE` は `SAFE` に変換して `adjacentMines` を設定する
+- flood-fill は再帰ではなくBFSキューで実装し、「隣接地雷数が0のセルだけを次展開する」ことで過剰展開を防げる
+- 旗セルは開始セル判定だけでなくBFS近傍展開時にも除外すると、連鎖開拓で旗が剥がれない挙動を保証できる
+
+## 2026-03-24 T1-5 フラグ設置/解除
+- `toggleFlag(state, x, y)` は `flags` の `","` 形式キー（実体は ```${x},${y}```）を直接トグルし、設置時のみ `true`、解除と無効操作は `false` に統一すると仕様確認がしやすい
+- `SAFE` は開拓済みセルとして扱いフラグ不可、`MINE_SAFE` / `MINE_DANGER` のみフラグ対象に限定すると `Cell` へ `isFlagged` を増やさず `GameState.flags` だけで状態管理できる
+- strict + `noUncheckedIndexedAccess` ではテスト側も non-null assertion を避け、座標アクセス用ヘルパーで `undefined` を明示チェックすると Biome 警告を回避しつつ可読性を維持できる
