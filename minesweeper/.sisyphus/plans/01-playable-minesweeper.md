@@ -437,14 +437,14 @@ bun run test    # → PASS
 
 ## 完了チェックリスト
 
-- [ ] `bun run test` → 全テストPASS
-- [ ] `bun run typecheck` → エラーなし
-- [ ] `bun run dev` → ブラウザでマインスイーパーが遊べる
+- [x] `bun run test` → 全テストPASS
+- [x] `bun run typecheck` → エラーなし
+- [x] `bun run dev` → ブラウザでマインスイーパーが遊べる
 - [ ] 人間が1ゲーム完整えて勝利画面を確認
 - [ ] 人間が地雷を踏んで敗北画面を確認
-- [ ] flood-fillが正しく動作することを確認
-- [ ] フラグの設置/解除が正しく動作することを確認
-- [ ] スクリーンショットが `.sisyphus/evidence/d1-gameplay.png` に保存されている
+- [x] flood-fillが正しく動作することを確認
+- [x] フラグの設置/解除が正しく動作することを確認
+- [x] スクリーンショットが `.sisyphus/evidence/d1-gameplay.png` に保存されている
 
 ---
 
