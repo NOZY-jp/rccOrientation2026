@@ -4,6 +4,13 @@ import type { ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { PixiCanvas } from '../PixiCanvas';
 
+vi.mock('pixi.js', () => {
+  return {
+    Graphics: class MockGraphics {},
+    Text: class MockText {},
+  };
+});
+
 vi.mock('@pixi/react', () => {
   interface MockStageProps {
     width?: number;
@@ -24,6 +31,7 @@ vi.mock('@pixi/react', () => {
         {children}
       </div>
     ),
+    extend: vi.fn(),
   };
 });
 

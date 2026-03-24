@@ -12,3 +12,8 @@
 - React 19 in this repo is incompatible with `@pixi/react@7` Stage runtime (ReactCurrentOwner/ReactCurrentBatchConfig errors).
 - Switched to `@pixi/react@8` + `pixi.js@8` for browser compatibility and wrapped `Application` as a local Stage alias in `PixiCanvas.tsx` to keep the requested wrapper shape.
 - Pixi canvas mount was verified in browser automation (`canvas` present at 320x320), and evidence saved to `.sisyphus/evidence/d2-pixi-setup.png`.
+
+## 2026-03-24 T2-2 completion notes
+- `@pixi/react` v8 requires explicit `extend({ Graphics, Text })` before using `<pixiGraphics>`/`<pixiText>` JSX nodes; without extend, canvas remains blank even though Stage mounts.
+- For strict palette literals (`as const`), mutable rendering variables (e.g. `fillColor`) should be widened to `number` in branching code to avoid TypeScript literal assignment errors.
+- In jsdom tests, `<pixiGraphics>` and `<pixiText>` behave as custom elements, so assertions are most reliable via rendered attributes (`text`) or direct tag queries, not widget runtime behavior.

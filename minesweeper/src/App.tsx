@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
+import { toggleFlag } from './core/board/flag';
 import { generateBoard } from './core/board/generate-board';
 import { revealCell } from './core/board/reveal';
-import { toggleFlag } from './core/board/flag';
 import { checkWinCondition } from './core/rules/win-lose';
 import { GamePhase } from './core/types/game';
 import { GameBoard } from './ui/GameBoard';
 import { GameStatus } from './ui/GameStatus';
-import { PixiCanvas } from './ui/pixi/PixiCanvas';
 import { CELL_SIZE, GRID_PADDING } from './ui/pixi/constants';
+import { GridRenderer } from './ui/pixi/grid/GridRenderer';
+import { PixiCanvas } from './ui/pixi/PixiCanvas';
 
 const DEFAULT_CONFIG = { width: 9, height: 9, mineCount: 10, seed: 42 };
 
@@ -62,7 +63,9 @@ export default function App() {
       />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <span style={{ color: '#cbd5e1', fontSize: '14px', textAlign: 'center' }}>PixiJS Canvas (D2 setup)</span>
-        <PixiCanvas width={pixiWidth} height={pixiHeight} />
+        <PixiCanvas width={pixiWidth} height={pixiHeight}>
+          <GridRenderer state={state} />
+        </PixiCanvas>
       </div>
     </div>
   );

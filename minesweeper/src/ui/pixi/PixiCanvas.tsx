@@ -1,5 +1,8 @@
-import { Application as Stage } from '@pixi/react';
+import { Application as Stage, extend } from '@pixi/react';
+import { Graphics, Text } from 'pixi.js';
 import type { ReactNode } from 'react';
+
+extend({ Graphics, Text });
 
 interface PixiCanvasProps {
   width: number;
