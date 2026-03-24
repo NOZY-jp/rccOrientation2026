@@ -6,6 +6,9 @@ export enum GamePhase {
   PLAYING = 'PLAYING',
   GAME_OVER = 'GAME_OVER',
   FLOOR_CLEAR = 'FLOOR_CLEAR',
+  REST = 'REST',
+  NEXT_FLOOR = 'NEXT_FLOOR',
+  VICTORY = 'VICTORY',
 }
 
 export interface GameState {

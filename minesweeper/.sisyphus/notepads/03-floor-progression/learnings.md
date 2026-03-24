@@ -20,3 +20,9 @@
 - T3-3: collectCheckpoints(playerX, playerY, checkpoints) は Math.floor(playerX/Y) と cp.x/y の一致で未回収CPのみ回収し、checkpoint.collected=true を破壊的更新して collected 配列と allCollected を返す
 - T3-3: テスト先行で checkpoint-detection.test.ts / checkpoint-collection.test.ts を追加し、範囲外/範囲内/境界値/浮動小数点/再検知防止/再回収防止/allCollected 判定を網羅
 - T3-3: 検証結果は vitest 94 passed / typecheck エラーなし
+
+- T3-4: GamePhase は既存値（PLAYING/GAME_OVER/FLOOR_CLEAR）を維持したまま REST/NEXT_FLOOR/VICTORY を追加し、既存 `checkWinCondition` の FLOOR_CLEAR 期待を壊さない拡張にした
+- T3-4: `transitionPhase(state, trigger, config)` を純粋関数で追加し、`cp_all_collected` は floorNumber と totalFloors で FLOOR_CLEAR/VICTORY を分岐、`all_dead` は GAME_OVER、`timer_expired` は NEXT_FLOOR を返す
+- T3-4: `executeFloorClear(state)` は破壊的更新で MINE_DANGER/MINE_SAFE を SAFE + adjacentMines=0 に変換し、全プレイヤー `isAlive=true`、`flags.clear()` を実施
+- T3-4: `generateNextFloor(state, config)` は `seed + (state.floorNumber ?? 1)` で新盤面を生成して `floorNumber` を +1 した GameState を返す
+- T3-4: 新規テスト `game-phase-extended.test.ts` / `floor-state-machine.test.ts` を追加し、日本語テスト名で遷移・クリア処理・次フロア生成を検証、最終結果は vitest 104 passed / typecheck clean
