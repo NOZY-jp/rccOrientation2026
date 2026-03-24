@@ -1,33 +1,22 @@
 {
   "compilerOptions": {
-    // Target & Module
     "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
     "moduleDetection": "force",
-    
-    // JSX
     "jsx": "react-jsx",
-    
-    // Emit
     "noEmit": true,
     "outDir": "dist",
-    
-    // Type checking
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "skipLibCheck": true,
-    
-    // Module resolution
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "allowJs": true,
-    
-    // Types
-    "types": ["bun-types", "vitest/globals"]
+    "types": ["bun-types", "vitest/globals", "react", "react-dom"]
   },
   "include": ["src/**/*", "tests/**/*"]
 }

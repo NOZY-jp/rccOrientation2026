@@ -1,10 +1,10 @@
 {
-  "active_plan": "/home/nozy/univ/rcc/rccProjects/orientation2026/minesweeper/.sisyphus/plans/00-overview.md",
-  "started_at": "2026-03-24T06:55:24.023Z",
+  "active_plan": "/home/nozy/univ/rcc/rccProjects/orientation2026/minesweeper/.sisyphus/plans/01-playable-minesweeper.md",
+  "started_at": "2026-03-24T07:21:33.235Z",
   "session_ids": [
     "ses_2e1605be4ffeOoEPwEtHENXqNo",
-    "ses_2e15d1d58ffe2v8N7J9dh0ntHJ",
-    "ses_2e1523891ffekZHFx9qEwPr3rS"
+    "ses_2e1450794ffeHuOx7uHIw03Sv2"
   ],
-  "plan_name": "00-overview"
+  "plan_name": "01-playable-minesweeper",
+  "agent": "atlas"
 }
