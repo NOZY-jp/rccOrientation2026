@@ -4,9 +4,11 @@ import { CellGraphics } from './CellGraphics';
 
 interface GridRendererProps {
   state: GameState;
+  onReveal?: (x: number, y: number) => void;
+  onFlag?: (x: number, y: number) => void;
 }
 
-export function GridRenderer({ state }: GridRendererProps) {
+export function GridRenderer({ state, onReveal, onFlag }: GridRendererProps) {
   const isGameOver = state.phase === GamePhase.GAME_OVER;
   const cellViews = state.cells.flatMap((row, y) =>
     row.map((cell, x) => ({
@@ -29,6 +31,8 @@ export function GridRenderer({ state }: GridRendererProps) {
           isFlagged={state.flags.has(view.key)}
           isGameOver={isGameOver}
           cellSize={CELL_SIZE}
+          onReveal={onReveal}
+          onFlag={onFlag}
         />
       ))}
     </>

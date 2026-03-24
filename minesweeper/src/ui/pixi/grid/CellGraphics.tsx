@@ -12,6 +12,8 @@ interface CellGraphicsProps {
   isFlagged: boolean;
   isGameOver: boolean;
   cellSize: number;
+  onReveal?: (x: number, y: number) => void;
+  onFlag?: (x: number, y: number) => void;
 }
 
 interface CellText {
@@ -27,6 +29,8 @@ export function CellGraphics({
   isFlagged,
   isGameOver,
   cellSize,
+  onReveal,
+  onFlag,
 }: CellGraphicsProps) {
   const positionX = x * cellSize + GRID_PADDING;
   const positionY = y * cellSize + GRID_PADDING;
@@ -63,9 +67,30 @@ export function CellGraphics({
     [cellSize, fillColor]
   );
 
+  const handlePointerDown = useCallback(
+    (event: { button?: number; preventDefault?: () => void }) => {
+      if (event.button === 2) {
+        event.preventDefault?.();
+        onFlag?.(x, y);
+        return;
+      }
+
+      if (event.button === 0) {
+        onReveal?.(x, y);
+      }
+    },
+    [onFlag, onReveal, x, y]
+  );
+
   return (
     <>
-      <pixiGraphics x={positionX} y={positionY} draw={drawCell} />
+      <pixiGraphics
+        x={positionX}
+        y={positionY}
+        draw={drawCell}
+        eventMode="static"
+        onPointerDown={handlePointerDown}
+      />
       {cellText ? (
         <pixiText
           text={cellText.text}
