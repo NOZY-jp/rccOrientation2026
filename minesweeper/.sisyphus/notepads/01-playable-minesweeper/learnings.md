@@ -31,3 +31,8 @@
 - `toggleFlag(state, x, y)` は `flags` の `","` 形式キー（実体は ```${x},${y}```）を直接トグルし、設置時のみ `true`、解除と無効操作は `false` に統一すると仕様確認がしやすい
 - `SAFE` は開拓済みセルとして扱いフラグ不可、`MINE_SAFE` / `MINE_DANGER` のみフラグ対象に限定すると `Cell` へ `isFlagged` を増やさず `GameState.flags` だけで状態管理できる
 - strict + `noUncheckedIndexedAccess` ではテスト側も non-null assertion を避け、座標アクセス用ヘルパーで `undefined` を明示チェックすると Biome 警告を回避しつつ可読性を維持できる
+
+## 2026-03-24 T1-6 勝敗判定（プロトタイプ）
+- `checkWinCondition` は公開APIを維持しつつ内部で `checkWinConditionPrototype` を呼ぶ構成にすると、D3の `checkWinByCheckpoints()` 置き換え時に移行しやすい
+- 暫定判定は `cell.type` のみを基準にし、`MINE_DANGER` 以外で `SAFE` になっていないセル数を集計すると「旗だけ立てた未開拓セル」を正しく未達成として扱える
+- `GAME_OVER` の不変条件を先頭で返すようにすると、既に敗北確定した状態を再評価で上書きしないことをテストで保証できる
