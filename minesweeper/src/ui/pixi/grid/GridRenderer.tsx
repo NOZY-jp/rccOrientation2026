@@ -1,5 +1,5 @@
 import { GamePhase, type GameState } from '../../../core/types/game';
-import { CELL_SIZE } from '../constants';
+import { CELL_SIZE, GRID_PADDING } from '../constants';
 import { CellGraphics } from './CellGraphics';
 
 interface GridRendererProps {
@@ -37,6 +37,25 @@ export function GridRenderer({ state, cursorPosition = null, onReveal, onFlag }:
           cellSize={CELL_SIZE}
           onReveal={onReveal}
           onFlag={onFlag}
+        />
+      ))}
+      {state.checkpoints?.filter(cp => cp.detectedBy.size > 0).map(cp => (
+        <pixiGraphics
+          key={`cp-${cp.id}`}
+          x={cp.x * CELL_SIZE + GRID_PADDING}
+          y={cp.y * CELL_SIZE + GRID_PADDING}
+          draw={g => {
+            g.clear();
+            if (cp.collected) {
+              g.circle(CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE / 3);
+              g.fill({ color: 0x4caf50, alpha: 0.6 });
+            } else {
+              g.circle(CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE / 3);
+              g.fill({ color: 0xff9800, alpha: 0.7 });
+              g.circle(CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE / 2.5);
+              g.stroke({ color: 0xffeb3b, width: 2, alpha: 0.5 });
+            }
+          }}
         />
       ))}
     </>

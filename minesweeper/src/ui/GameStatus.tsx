@@ -35,8 +35,11 @@ export const GameStatus: React.FC<GameStatusProps> = ({
         {phase === GamePhase.PLAYING && `プレイ中 (残り地雷: ${remainingMines})`}
         {phase === GamePhase.GAME_OVER && 'ゲームオーバー 💥'}
         {phase === GamePhase.FLOOR_CLEAR && 'クリア！🎉'}
+        {phase === GamePhase.REST && '休憩中...'}
+        {phase === GamePhase.NEXT_FLOOR && 'フロア遷移...'}
+        {phase === GamePhase.VICTORY && '全フロアクリア！🏆'}
       </div>
-      {(phase === GamePhase.GAME_OVER || phase === GamePhase.FLOOR_CLEAR) ? (
+      {(phase === GamePhase.GAME_OVER || phase === GamePhase.FLOOR_CLEAR || phase === GamePhase.VICTORY) ? (
         <button
           type="button"
           onClick={onNewGame}

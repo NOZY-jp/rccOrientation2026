@@ -30,3 +30,7 @@
 - T3-5: `checkWinCondition` は `state.phase===GAME_OVER` を最優先で返し、その後 `checkpoints?.length > 0` のときのみ CP 全回収判定を使うことで、CP未回収時は PLAYING、全回収時は floorNumber>=10 で VICTORY / それ以外 FLOOR_CLEAR を返す
 - T3-5: 後方互換は「CPが `undefined` または `[]` の場合に従来の全安全セル開拓判定へフォールバック」で維持でき、D1既存 `win-lose.test.ts`（5件）を無変更で通過
 - T3-5: 新規 `win-lose-updated.test.ts` で CPあり/未回収/10F勝利/空配列/undefined/GAME_OVER維持を日本語テスト名で検証し、全体結果は vitest 110 passed・typecheck clean
+- T3-6: UI層への統合において、useGameActions の handleReveal を拡張し、revealCell 後に detectCheckpoints と collectCheckpoints を連続呼び出しし、allCollected 時は transitionPhase と executeFloorClear で state を直接更新する構造にした
+- T3-6: PixiJS での CP 描画は GridRenderer に `<pixiGraphics>` を追加し、cp.x/y * CELL_SIZE + GRID_PADDING でセルに合わせた座標に円やチェックマークを fill/stroke する方式で @pixi/react に合わせた
+- T3-6: フロア遷移のアニメーションは React の DOM レイヤーに FloorClearOverlay と RestPhaseScreen を実装し、useEffect と setTimeout/setInterval を使って auto-transition し、onNext / onTimeout コールバックで useGameActions の REST / NEXT_FLOOR 遷移関数を叩く構成にした
+- T3-6: 最終検証結果は vitest 116 passed / typecheck clean。既存の D1 プレーンUI と D2 Pixi Canvas 両方に影響せず進行できる状態を達成

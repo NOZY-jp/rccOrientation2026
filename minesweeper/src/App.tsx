@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { GamePhase } from "./core/types/game";
+import { FloorClearOverlay } from "./ui/FloorClearOverlay";
+import { FloorIndicator } from "./ui/FloorIndicator";
 import { GameBoard } from "./ui/GameBoard";
 import { GameStatus } from "./ui/GameStatus";
+import { RestPhaseScreen } from "./ui/RestPhaseScreen";
 import { useCursor } from "./ui/input/useCursor";
 import { useKeyboardInput } from "./ui/input/useKeyboardInput";
 import { ActionButtons } from "./ui/mobile/ActionButtons";
@@ -13,7 +17,23 @@ import { GridInteraction } from "./ui/pixi/grid/GridInteraction";
 import { useGameActions } from "./ui/pixi/grid/useGameActions";
 import { PixiCanvas } from "./ui/pixi/PixiCanvas";
 
-const DEFAULT_CONFIG = { width: 9, height: 9, mineCount: 10, seed: 42 };
+const DEFAULT_CONFIG = { 
+  width: 9, 
+  height: 9, 
+  mineCount: 10, 
+  seed: 42,
+  checkPointCandidates: [
+    [false, true, false, false, false, false, false, false, false],
+    [false, false, false, false, true, false, false, false, false],
+    [false, false, false, false, false, false, false, true, false],
+    [false, false, true, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, true],
+    [true, false, false, false, false, false, true, false, false],
+    [false, false, false, false, true, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false],
+    [false, true, false, false, false, false, false, false, false],
+  ]
+};
 const PIXI_VIEWPORT_WIDTH = 600;
 const PIXI_VIEWPORT_HEIGHT = 400;
 
@@ -36,6 +56,8 @@ export default function App() {
 		handleReveal,
 		handleFlag,
 		handleNewGame,
+		handleRestPhase,
+		handleNextFloor,
 		flagCount,
 		mineCount,
 	} = useGameActions(DEFAULT_CONFIG);
@@ -149,6 +171,11 @@ export default function App() {
 					<h1 style={{ color: "white", textAlign: "center", margin: 0 }}>
 						Minesweeper
 					</h1>
+					<FloorIndicator
+						floorNumber={state.floorNumber ?? 1}
+						totalCheckpoints={state.checkpoints?.length ?? 0}
+						collectedCheckpoints={state.checkpoints?.filter(cp => cp.collected).length ?? 0}
+					/>
 					<GameStatus
 						phase={state.phase}
 						mineCount={mineCount}
@@ -162,7 +189,14 @@ export default function App() {
 					/>
 				</>
 			)}
-			<div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+			<div style={{ display: "flex", flexDirection: "column", gap: "8px", position: "relative" }}>
+				{isMobile && (
+					<FloorIndicator
+						floorNumber={state.floorNumber ?? 1}
+						totalCheckpoints={state.checkpoints?.length ?? 0}
+						collectedCheckpoints={state.checkpoints?.filter(cp => cp.collected).length ?? 0}
+					/>
+				)}
 				<GameStatus
 					phase={state.phase}
 					mineCount={mineCount}
@@ -195,6 +229,12 @@ export default function App() {
       />
 					</CameraContainer>
 				</PixiCanvas>
+				{state.phase === GamePhase.FLOOR_CLEAR && (
+					<FloorClearOverlay floorNumber={state.floorNumber ?? 1} onNext={handleRestPhase} />
+				)}
+				{state.phase === GamePhase.REST && (
+					<RestPhaseScreen nextFloorNumber={(state.floorNumber ?? 1) + 1} onTimeout={handleNextFloor} />
+				)}
 			</div>
 			{isMobile ? (
 				<>
