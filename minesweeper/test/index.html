@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>p5.js + nipple.js Mobile Landscape Test</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #1a1a2e;
+      touch-action: none; /* Prevent browser gesture interference */
+      font-family: sans-serif;
+    }
+    
+    #portrait-message {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #1a1a2e;
+      color: white;
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    @media (orientation: portrait) {
+      #portrait-message {
+        display: flex;
+      }
+    }
+
+    #ui-overlay {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(26, 26, 46, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      color: white;
+      z-index: 1000;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: flex-end;
+    }
+
+    #speed-display {
+      font-size: 0.9rem;
+      font-family: monospace;
+    }
+
+    #speed-slider {
+      width: 100px;
+    }
+
+    #instructions-overlay {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(26, 26, 46, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      color: white;
+      z-index: 1000;
+      pointer-events: none;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="instructions-overlay">
+    P1: Joystick | P2: WASD
+  </div>
+
+  <div id="portrait-message">
+    Please rotate your device to landscape
+  </div>
+
+  <div id="ui-overlay">
+    <div id="speed-display">Speed: 0.0 px/f</div>
+    <input type="range" id="speed-slider" min="1.0" max="5.0" step="0.1" value="2.0">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://unpkg.com/nipplejs@1.0.1/dist/index.js"></script>
+  <script src="sketch.js"></script>
+
+</body>
+</html>

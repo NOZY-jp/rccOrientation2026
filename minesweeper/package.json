@@ -1,0 +1,20 @@
+{
+  "name": "minesweeper",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "dev": "bun run --hot index.ts",
+    "build": "bun build index.ts --outdir dist"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "vitest": "^4.1.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
