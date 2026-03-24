@@ -43,3 +43,25 @@
 .action-btn-detonate {
   background: rgba(249, 115, 22, 0.6);
 }
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .joystick-zone {
+    width: 120px;
+    height: 120px;
+    bottom: 10px;
+    left: 10px;
+  }
+  
+  .action-buttons {
+    flex-direction: row;
+    bottom: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .action-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+  }
+}

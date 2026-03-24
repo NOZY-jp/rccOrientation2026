@@ -32,3 +32,9 @@
 - Keep keyboard input isolated in a hook that only dispatches callbacks from `event.code`, and guard with `event.repeat` to avoid long-press replay bugs.
 - For temporary PC cursor UX, pass `{x,y}` from App through `GridInteraction` → `GridRenderer` → `CellGraphics` and draw a dedicated highlight stroke, instead of coupling cursor state to cell data.
 - Mobile ActionButtons can be aligned with keyboard cursor behavior without prop changes by wiring Dig/Flag callbacks to shared `handle*AtCursor` functions in `App.tsx`.
+
+## 2026-03-24 Mobile Layout Fix
+- Conditionally hiding DOM sections (like the D1 grid and desktop headers) via `isMobile` ensures both space reclamation and DOM event clarity on mobile.
+- To prevent landscape overflow issues in fixed mobile UI overlays, use CSS media queries combining `(max-height: ...)` and `(orientation: landscape)`. This allows scaling down buttons and adjusting their coordinates gracefully.
+- Re-measuring the viewport in a hook using `window.addEventListener("resize")` enables dynamic PixiJS canvas sizes (`window.innerWidth` and `window.innerHeight - X`) which ensures the stage perfectly fits available mobile real estate without clipping.
+- Setting `document.documentElement.style.overflow = "hidden"` while `isMobile` is true effectively stops bounce-scroll and off-canvas panning on mobile browsers.

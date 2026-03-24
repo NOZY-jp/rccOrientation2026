@@ -19,6 +19,18 @@ const PIXI_VIEWPORT_HEIGHT = 400;
 
 export default function App() {
 	const [isMobile, setIsMobile] = useState(false);
+	const [windowSize, setWindowSize] = useState({
+		width: typeof window !== "undefined" ? window.innerWidth : PIXI_VIEWPORT_WIDTH,
+		height: typeof window !== "undefined" ? window.innerHeight : PIXI_VIEWPORT_HEIGHT,
+	});
+
+	useEffect(() => {
+		if (typeof window === "undefined") return;
+		const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
+
  const {
 		state,
 		handleReveal,
@@ -27,8 +39,8 @@ export default function App() {
 		flagCount,
 		mineCount,
 	} = useGameActions(DEFAULT_CONFIG);
-	const pixiWidth = PIXI_VIEWPORT_WIDTH;
-	const pixiHeight = PIXI_VIEWPORT_HEIGHT;
+	const pixiWidth = isMobile ? windowSize.width : PIXI_VIEWPORT_WIDTH;
+	const pixiHeight = isMobile ? windowSize.height - 80 : PIXI_VIEWPORT_HEIGHT;
 	const boardWidth = state.width * CELL_SIZE + GRID_PADDING * 2;
 	const boardHeight = state.height * CELL_SIZE + GRID_PADDING * 2;
 	const {
@@ -87,7 +99,7 @@ export default function App() {
 
 	useEffect(() => {
 		resetCamera(boardWidth, boardHeight, pixiWidth, pixiHeight);
-	}, [boardHeight, boardWidth, resetCamera]);
+	}, [boardHeight, boardWidth, pixiWidth, pixiHeight, resetCamera]);
 
 	useEffect(() => {
 		if (typeof window === "undefined") {
@@ -127,23 +139,29 @@ export default function App() {
 				fontFamily: "monospace",
 				display: "flex",
 				flexDirection: "column",
-				gap: "20px",
+				gap: isMobile ? "0" : "20px",
+				height: isMobile ? "100vh" : "auto",
+				justifyContent: isMobile ? "center" : "flex-start",
 			}}
 		>
-			<h1 style={{ color: "white", textAlign: "center", margin: 0 }}>
-				Minesweeper
-			</h1>
-			<GameStatus
-				phase={state.phase}
-				mineCount={mineCount}
-				flagCount={flagCount}
-				onNewGame={handleNewGame}
-			/>
-			<GameBoard
-				state={state}
-				onCellClick={handleReveal}
-				onCellRightClick={handleFlag}
-			/>
+			{!isMobile && (
+				<>
+					<h1 style={{ color: "white", textAlign: "center", margin: 0 }}>
+						Minesweeper
+					</h1>
+					<GameStatus
+						phase={state.phase}
+						mineCount={mineCount}
+						flagCount={flagCount}
+						onNewGame={handleNewGame}
+					/>
+					<GameBoard
+						state={state}
+						onCellClick={handleReveal}
+						onCellRightClick={handleFlag}
+					/>
+				</>
+			)}
 			<div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
 				<GameStatus
 					phase={state.phase}
@@ -151,12 +169,15 @@ export default function App() {
 					flagCount={flagCount}
 					onNewGame={handleNewGame}
 				/>
-				<span
-					style={{ color: "#cbd5e1", fontSize: "14px", textAlign: "center" }}
-				>
-					PixiJS Canvas (D2 setup)
-				</span>
+				{!isMobile && (
+					<span
+						style={{ color: "#cbd5e1", fontSize: "14px", textAlign: "center" }}
+					>
+						PixiJS Canvas (D2 setup)
+					</span>
+				)}
 				<PixiCanvas
+					key={isMobile ? "mobile" : "desktop"}
 					width={pixiWidth}
 					height={pixiHeight}
 					preventContextMenu
