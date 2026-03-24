@@ -84,8 +84,8 @@ bun run dev         # → ブラウザで空画面が表示される
 ```
 
 **ステップ6: 人間目視確認**
-- [ ] `bun run dev` でブラウザに空のReact画面が表示される
-- [ ] `bun run test` でテストがPASSする
+- [x] `bun run dev` でブラウザに空のReact画面が表示される
+- [x] `bun run test` でテストがPASSする
 
 **コミット**: `feat(d1): プロジェクト足場とテスト基盤を構築`
 

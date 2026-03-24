@@ -1,8 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import {
+  CellType,
+  type CellType as CellTypeType,
+} from '../src/core/types/index.ts';
 
 describe('プロジェクト基盤セットアップ', () => {
   it('型定義がインポート可能であること', () => {
-    const cellType: import('../src/core/types/index.ts').CellType = 'safe_cell';
-    expect(cellType).toBe('safe_cell');
+    const cellType: CellTypeType = CellType.SAFE;
+
+    expect(cellType).toBe('safe');
   });
 });
