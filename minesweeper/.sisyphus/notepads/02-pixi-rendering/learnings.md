@@ -22,3 +22,13 @@
 - Camera transforms are simplest when isolated: keep zoom/pan state in `useCamera` and apply only through a dedicated `<pixiContainer position scale>` wrapper so grid interaction code stays unchanged.
 - DOM-level pointer/wheel handling in `PixiCanvas` avoids intercepting left-click Pixi cell events while still enabling right/middle drag pan and wheel/touch-pinch zoom.
 - Touch pinch can be implemented with Pointer Events by tracking two active touch pointers and converting distance delta to the existing wheel-based zoom pathway for shared clamp logic.
+
+## 2026-03-24 T2-5 completion notes
+- `nipplejs` module mocking in Vitest requires `vi.hoisted(...)` for factory-owned mocks; plain top-level references inside `vi.mock()` can fail due hoist order (`Cannot access ... before initialization`).
+- For strict TypeScript compatibility in joystick wrappers, using a small local manager interface (`on('move' | 'end')`, `destroy`) avoids relying on incomplete/fragile upstream ambient typings while preserving runtime behavior.
+- Mobile control wiring can stay D2-safe by rendering controls only when touch/mobile is detected and connecting Dig/Flag callbacks to existing game action handlers; Detonate can remain a no-op placeholder until D5.
+
+## 2026-03-24 T2-6 completion notes
+- Keep keyboard input isolated in a hook that only dispatches callbacks from `event.code`, and guard with `event.repeat` to avoid long-press replay bugs.
+- For temporary PC cursor UX, pass `{x,y}` from App through `GridInteraction` → `GridRenderer` → `CellGraphics` and draw a dedicated highlight stroke, instead of coupling cursor state to cell data.
+- Mobile ActionButtons can be aligned with keyboard cursor behavior without prop changes by wiring Dig/Flag callbacks to shared `handle*AtCursor` functions in `App.tsx`.

@@ -11,6 +11,7 @@ interface CellGraphicsProps {
   adjacentMines: number;
   isFlagged: boolean;
   isGameOver: boolean;
+  isCursorHighlighted?: boolean;
   cellSize: number;
   onReveal?: (x: number, y: number) => void;
   onFlag?: (x: number, y: number) => void;
@@ -28,6 +29,7 @@ export function CellGraphics({
   adjacentMines,
   isFlagged,
   isGameOver,
+  isCursorHighlighted = false,
   cellSize,
   onReveal,
   onFlag,
@@ -63,8 +65,14 @@ export function CellGraphics({
       graphics.setStrokeStyle({ color: 0x4b5563, width: 1 });
       graphics.rect(0, 0, cellSize, cellSize);
       graphics.stroke();
+
+      if (isCursorHighlighted) {
+        graphics.setStrokeStyle({ color: 0xfacc15, width: 3 });
+        graphics.rect(1.5, 1.5, cellSize - 3, cellSize - 3);
+        graphics.stroke();
+      }
     },
-    [cellSize, fillColor]
+    [cellSize, fillColor, isCursorHighlighted]
   );
 
   const handlePointerDown = useCallback(

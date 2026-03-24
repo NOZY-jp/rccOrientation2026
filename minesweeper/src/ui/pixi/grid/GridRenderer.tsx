@@ -4,11 +4,12 @@ import { CellGraphics } from './CellGraphics';
 
 interface GridRendererProps {
   state: GameState;
+  cursorPosition?: { x: number; y: number } | null;
   onReveal?: (x: number, y: number) => void;
   onFlag?: (x: number, y: number) => void;
 }
 
-export function GridRenderer({ state, onReveal, onFlag }: GridRendererProps) {
+export function GridRenderer({ state, cursorPosition = null, onReveal, onFlag }: GridRendererProps) {
   const isGameOver = state.phase === GamePhase.GAME_OVER;
   const cellViews = state.cells.flatMap((row, y) =>
     row.map((cell, x) => ({
@@ -30,6 +31,9 @@ export function GridRenderer({ state, onReveal, onFlag }: GridRendererProps) {
           adjacentMines={view.cell.adjacentMines}
           isFlagged={state.flags.has(view.key)}
           isGameOver={isGameOver}
+          isCursorHighlighted={
+            cursorPosition !== null && view.x === cursorPosition.x && view.y === cursorPosition.y
+          }
           cellSize={CELL_SIZE}
           onReveal={onReveal}
           onFlag={onFlag}
