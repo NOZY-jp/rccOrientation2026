@@ -4,6 +4,7 @@ import {
 	GamePhase,
 	type GameState,
 } from "../types/index.ts";
+import { placeCheckpoints } from "./place-checkpoints.ts";
 import { createSeededRandom } from "./seed-random.ts";
 
 export function generateBoard(config: BoardConfig): GameState {
@@ -48,6 +49,11 @@ export function generateBoard(config: BoardConfig): GameState {
 		targetCell.type = CellType.MINE_DANGER;
 	}
 
+	const checkpoints =
+		config.checkPointCandidates === undefined
+			? undefined
+			: placeCheckpoints(cells, config.checkPointCandidates, seed + 1);
+
 	return {
 		width,
 		height,
@@ -56,5 +62,6 @@ export function generateBoard(config: BoardConfig): GameState {
 		phase: GamePhase.PLAYING,
 		mines,
 		flags: new Set<string>(),
+		...(checkpoints === undefined ? {} : { checkpoints }),
 	};
 }

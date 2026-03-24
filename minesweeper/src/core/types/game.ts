@@ -26,4 +26,6 @@ export interface BoardConfig {
   height: number;
   mineCount: number;
   seed: number;
+  checkPointCandidates?: boolean[][];
+  spawnPositions?: Array<{ x: number; y: number }>;
 }
