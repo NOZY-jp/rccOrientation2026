@@ -1,4 +1,5 @@
 import type { Cell } from './cell.ts';
+import type { Checkpoint } from './checkpoint.ts';
 import type { Player } from './player.ts';
 
 export enum GamePhase {
@@ -15,6 +16,9 @@ export interface GameState {
   phase: GamePhase;
   mines: Set<string>;
   flags: Set<string>;
+  checkpoints?: Checkpoint[];
+  floorNumber?: number;
+  collectedCheckpoints?: number;
 }
 
 export interface BoardConfig {

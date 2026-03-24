@@ -1,17 +1,9 @@
 {
-  "active_plan": "/home/nozy/univ/rcc/rccProjects/orientation2026/minesweeper/.sisyphus/plans/02-pixi-rendering.md",
-  "started_at": "2026-03-24T09:52:04.331Z",
+  "active_plan": "/home/nozy/univ/rcc/rccProjects/orientation2026/minesweeper/.sisyphus/plans/03-floor-progression.md",
+  "started_at": "2026-03-24T18:44:09.687Z",
   "session_ids": [
-    "ses_2e1605be4ffeOoEPwEtHENXqNo",
-    "ses_2e0bcce9dffeKDZY0McktuEQdS",
-    "ses_2e0bcd803ffei4jraE29TRwY8b",
-    "ses_2e0b9d8c6ffeSLtakXrge4p5pG",
-    "ses_2e0a68483ffeAD63PtFlKNE8vK",
-    "ses_2e06cdc75ffeR6TARqrDLOT86J",
-    "ses_2e0539720ffetWwL8CF8VRmecC",
-    "ses_2e0556717ffeyOjq1VQzraY2p6",
-    "ses_2e0556ffdffemqL0QD7KnGYpZR"
+    "ses_2e1605be4ffeOoEPwEtHENXqNo"
   ],
-  "plan_name": "02-pixi-rendering",
+  "plan_name": "03-floor-progression",
   "agent": "atlas"
 }

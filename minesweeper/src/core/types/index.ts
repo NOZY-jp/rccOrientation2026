@@ -13,5 +13,6 @@ export type Direction4 = 'n' | 'e' | 's' | 'w';
 export type Direction = Direction8 | Direction4;
 
 export * from './cell.ts';
+export * from './checkpoint.ts';
 export * from './game.ts';
 export * from './player.ts';
