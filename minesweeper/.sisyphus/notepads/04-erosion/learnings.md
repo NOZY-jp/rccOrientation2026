@@ -1,0 +1,7 @@
+- T4-2では「BFS」はシード探索ではなく、地雷原（MINE_SAFE/MINE_DANGER）に8近傍で接する非地雷セル（SAFE/WASTELAND）全集合を前線候補として扱う実装が正。
+- 候補抽出は `existingWarnings`（`"x,y"` 形式）を除外し、結果を `y` 昇順→`x` 昇順でソートすると選択結果が決定的になる。
+- `selectErosionTargets()` は候補リストの先頭から `power` 件を `slice` するだけで仕様を満たし、候補不足時は全件返却になる。
+- T4-1では侵食スケジューラを完全な純粋関数として実装し、state入力を破壊せず常に新しいstateを返す構成にした。
+- フェーズ制御は GamePhase.PLAYING のみ進行させ、それ以外は state不変 + shouldTrigger=false でガードした。
+- updateErosionScheduler の返却は { state, shouldTrigger } とし、侵食実行判定と状態更新を分離して呼び出し側の副作用処理を明確化した。
+- 警告取得は warningExpiry > currentTime のみ返す仕様で統一し、表示側が期限切れ警告を扱わなくてよい設計にした。
