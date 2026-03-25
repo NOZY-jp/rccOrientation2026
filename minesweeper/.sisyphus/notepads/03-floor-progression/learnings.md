@@ -34,3 +34,14 @@
 - T3-6: PixiJS での CP 描画は GridRenderer に `<pixiGraphics>` を追加し、cp.x/y * CELL_SIZE + GRID_PADDING でセルに合わせた座標に円やチェックマークを fill/stroke する方式で @pixi/react に合わせた
 - T3-6: フロア遷移のアニメーションは React の DOM レイヤーに FloorClearOverlay と RestPhaseScreen を実装し、useEffect と setTimeout/setInterval を使って auto-transition し、onNext / onTimeout コールバックで useGameActions の REST / NEXT_FLOOR 遷移関数を叩く構成にした
 - T3-6: 最終検証結果は vitest 116 passed / typecheck clean。既存の D1 プレーンUI と D2 Pixi Canvas 両方に影響せず進行できる状態を達成
+
+## D7 向け CP可視化仕様（ユーザー明言）
+- **D3の現状**: `handleReveal` 内で `detectCheckpoints` を呼ぶ（掘ったら検知）→ **D7で変更予定**
+- **D7での仕様**: CP検知は「連続移動プレイヤー（D7追加）が近づいたら」トリガーされる。掘るかどうかは関係ない
+- **フェード遷移**: 検出範囲（detectionRadius）を中間値として、+-0.5マスで不透明度が変化する
+  - `detectionRadius = 3` の場合:
+    - 距離 3.5 で表示開始（opacity = 0）
+    - 距離 3.0 で opacity = 0.5
+    - 距離 2.5 以下で opacity = 1.0（最大不透明度）
+  - 離れたら逆にフェードアウトして消える
+- **実装時の注意**: 現在の `detectCheckpoints` は閾値判定（dist² ≤ R²）のON/OFFのみ。D7では連続的な距離ベースのopacity計算が必要。`detectedBy` Set方式ではなく、毎フレーム距離を計算してopacityを決めるリアルタイム描画に変更することになる
