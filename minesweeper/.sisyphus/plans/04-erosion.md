@@ -187,7 +187,7 @@ bun run test    # → PASS
 ```
 
 **ステップ6: 人間目視確認**
-- [ ] `bun run typecheck` → エラーなし
+- [x] `bun run typecheck` → エラーなし
 
 **コミット**: `feat(d4): 侵食設定とスケジューラ基盤`
 
@@ -256,7 +256,7 @@ bun run test    # → PASS
 ```
 
 **ステップ6: 人間目視確認**
-- [ ] `bun run typecheck` → エラーなし
+- [x] `bun run typecheck` → エラーなし
 
 **コミット**: `feat(d4): BFS前線探索と侵食対象選択`
 
