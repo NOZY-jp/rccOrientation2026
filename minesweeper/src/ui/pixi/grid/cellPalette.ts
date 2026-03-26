@@ -3,6 +3,9 @@ export const CELL_COLORS = {
   safe: 0xd1d5db,
   flag: 0xef4444,
   gameover: 0xdc2626,
+  wasteland: 0x92400e,
+  hole: 0x1c1917,
+  warning: 0xfbbf24,
 } as const;
 
 export const NUMBER_COLORS: Record<number, number> = {

@@ -1,15 +1,18 @@
 import { GamePhase, type GameState } from '../../../core/types/game';
+import type { WarningCell } from '../../../systems/erosion/erosion-types';
 import { CELL_SIZE, GRID_PADDING } from '../constants';
 import { CellGraphics } from './CellGraphics';
+import { ErosionWarningOverlay } from './ErosionWarningOverlay';
 
 interface GridRendererProps {
   state: GameState;
   cursorPosition?: { x: number; y: number } | null;
   onReveal?: (x: number, y: number) => void;
   onFlag?: (x: number, y: number) => void;
+  pendingWarnings?: WarningCell[];
 }
 
-export function GridRenderer({ state, cursorPosition = null, onReveal, onFlag }: GridRendererProps) {
+export function GridRenderer({ state, cursorPosition = null, onReveal, onFlag, pendingWarnings = [] }: GridRendererProps) {
   const isGameOver = state.phase === GamePhase.GAME_OVER;
   const cellViews = state.cells.flatMap((row, y) =>
     row.map((cell, x) => ({
@@ -58,6 +61,9 @@ export function GridRenderer({ state, cursorPosition = null, onReveal, onFlag }:
           }}
         />
       ))}
+      {pendingWarnings.length > 0 && (
+        <ErosionWarningOverlay pendingWarnings={pendingWarnings} cellSize={CELL_SIZE} />
+      )}
     </>
   );
 }

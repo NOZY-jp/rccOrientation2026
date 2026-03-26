@@ -53,6 +53,10 @@ export function CellGraphics({
     if (adjacentMines > 0) {
       cellText = { text: adjacentMines.toString(), color: NUMBER_COLORS[adjacentMines] ?? 0x111827 };
     }
+  } else if (cellType === CellType.WASTELAND) {
+    fillColor = CELL_COLORS.wasteland;
+  } else if (cellType === CellType.HOLE) {
+    fillColor = CELL_COLORS.hole;
   }
 
   const drawCell = useCallback(

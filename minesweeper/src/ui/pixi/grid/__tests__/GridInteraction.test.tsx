@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, renderHook } from '@testing-library/react';
+import type React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { toggleFlag } from '../../../../core/board/flag';
 import { generateBoard } from '../../../../core/board/generate-board';
@@ -9,6 +10,24 @@ import { CellType } from '../../../../core/types/cell';
 import { GamePhase, type BoardConfig, type GameState } from '../../../../core/types/game';
 import { GridInteraction } from '../GridInteraction';
 import { useGameActions } from '../useGameActions';
+
+vi.mock('@pixi/react', () => {
+  return {
+    pixiGraphics: ({ children, draw, ...props }: React.ComponentProps<'div'> & { draw?: any }) => {
+      return (
+        <div data-testid="mock-pixi-graphics" {...props}>
+          {children}
+        </div>
+      );
+    },
+    pixiText: ({ children, ...props }: React.ComponentProps<'div'>) => (
+      <div data-testid="mock-pixi-text" {...props}>
+        {children}
+      </div>
+    ),
+    useTick: vi.fn(),
+  };
+});
 
 vi.mock('../../../../core/board/generate-board', () => ({
   generateBoard: vi.fn(),

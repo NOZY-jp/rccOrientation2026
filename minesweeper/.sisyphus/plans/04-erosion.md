@@ -378,7 +378,7 @@ bun run test    # → PASS
 ```
 
 **ステップ6: 人間目視確認**
-- [ ] `bun run typecheck` → エラーなし
+- [x] `bun run typecheck` → エラーなし
 
 **コミット**: `feat(d4): 侵食パイプライン統合`
 

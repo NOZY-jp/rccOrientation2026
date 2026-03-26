@@ -21,3 +21,8 @@
 - `updateErosionScheduler()` の返す `erosionCount` 増分をトリガーに新規警告追加を行うと、インターバル判定ロジックを重複せずに「pendingWarnings が空のときだけ次サイクル開始」を自然に維持できる。
 - 侵食パイプラインを純粋関数として保つには、期限切れ警告を実行するタイミングでのみ `GameState` を深めに複製し、非実行tickは参照をそのまま返す構成が効率と可読性のバランスが良い。
 - `selectErosionTargets()` の `excludeWarnings` にはスケジューラ更新後の `pendingWarnings` から作る `Set` を渡すことで、同tick内の重複警告を確実に防げる。
+
+## T4-5 Learnings
+- `@pixi/react` 環境で `<pixiGraphics>` などのintrinsic elementsをVitestでテストする際、`vi.mock('@pixi/react')` 内でReactコンポーネントのようにモックを定義してもJSXの intrinsic element には適用されないため、直接 `querySelector('pixiGraphics')` で取得して検証する方が適切。
+- PixiJSの `useTick` は毎フレーム呼ばれるコールバックを登録するため、Reactのレンダリングループから切り離して `useRef<Graphics>` などで直接アルファ値 (`alpha`) を変更すると、パフォーマンス劣化を防ぎつつ滑らかな点滅アニメーションが実装できる。
+- `requestAnimationFrame` を用いたメインループ内で純粋関数の `updateErosion` を呼び、`nextState !== stateRef.current` のときのみReactの `setState` を発火させることで、フレームごとの不要な再レンダリングを抑止できる。

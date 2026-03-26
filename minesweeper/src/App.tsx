@@ -53,6 +53,7 @@ export default function App() {
 
  const {
 		state,
+		erosionState,
 		handleReveal,
 		handleFlag,
 		handleNewGame,
@@ -226,6 +227,7 @@ export default function App() {
        cursorPosition={cursor}
        onReveal={handleReveal}
        onFlag={handleFlag}
+       pendingWarnings={erosionState.pendingWarnings}
       />
 					</CameraContainer>
 				</PixiCanvas>
