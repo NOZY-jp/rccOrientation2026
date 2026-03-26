@@ -16,3 +16,8 @@
 - frontline抽出は「`SAFE | WASTELAND` かつ 8近傍に `MINE_SAFE | MINE_DANGER` が1つ以上」の条件を走査順（y→x）で判定すると、選択順序の決定性を維持しやすい。
 - 侵食対象選択は BFS 拡張中に候補を `Set/Map` で重複管理し、最終返却だけを走査順ソートして `power` 件に切ると、方向順依存の揺らぎを抑えて仕様の固定順序を満たせる。
 - `noUncheckedIndexedAccess` 前提では `cells[y][x]` を直接参照せず、`getCell()` ヘルパ経由で安全化すると core/test の両方で型エラーを防げる。
+
+## T4-4 Learnings
+- `updateErosionScheduler()` の返す `erosionCount` 増分をトリガーに新規警告追加を行うと、インターバル判定ロジックを重複せずに「pendingWarnings が空のときだけ次サイクル開始」を自然に維持できる。
+- 侵食パイプラインを純粋関数として保つには、期限切れ警告を実行するタイミングでのみ `GameState` を深めに複製し、非実行tickは参照をそのまま返す構成が効率と可読性のバランスが良い。
+- `selectErosionTargets()` の `excludeWarnings` にはスケジューラ更新後の `pendingWarnings` から作る `Set` を渡すことで、同tick内の重複警告を確実に防げる。
